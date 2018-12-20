@@ -4,7 +4,7 @@
 package com.maxt.boxman.gui;
 
 /**
- * Description: 
+ * Description: 程序入口
  * @author maxt@yusys.com.cn
  * @since 2018年12月19日
  */

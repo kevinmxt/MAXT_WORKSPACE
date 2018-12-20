@@ -38,6 +38,7 @@ public class BoxmanFrame extends JFrame implements ActionListener {
 	
 	int currentLvl = 1;
 
+	/** game panel */
 	JPanel panel;
 	
 	Warehouse warehouse;
@@ -61,7 +62,7 @@ public class BoxmanFrame extends JFrame implements ActionListener {
         // 标题栏
         super(title);
         // 大小
-        setSize(1000, 900);
+        setSize(950, 900);
         // 居中
         setLocationRelativeTo(null);
         // 默认关闭操作
@@ -131,7 +132,7 @@ public class BoxmanFrame extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * 生成界面
+	 * 生成用户界面
 	 */
 	private void generateInterface() {
 		generateMenu();
@@ -162,17 +163,48 @@ public class BoxmanFrame extends JFrame implements ActionListener {
 	private void generateMenu() {
 		// 菜单栏
         JMenuBar mb = new JMenuBar();
-		JMenu fileMenu = new JMenu("file");
+		JMenu fileMenu = new JMenu("option");
 		JMenuItem startMenu = new JMenuItem("new game");
 		startMenu.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				System.out.println("new game");
+				currentLvl = 1;
 				generateGamePanel();
 			}
 		});
 		fileMenu.add(startMenu);
+		JMenuItem resetMenu = new JMenuItem("reset game");
+		resetMenu.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("reset game");
+				generateGamePanel();
+			}
+		});
+		fileMenu.add(resetMenu);
+		JMenuItem selectLvlMenu = new JMenuItem("select level");
+		selectLvlMenu.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("select level");
+				String result = JOptionPane.showInputDialog(null, "please input level", "select level",
+						JOptionPane.OK_CANCEL_OPTION);
+				System.out.println(result);
+				if (result != null) {
+					try {
+						currentLvl = Integer.parseInt(result);
+						generateGamePanel();
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, "Invalid level number", "Error", JOptionPane.YES_OPTION);
+					}
+				}
+			}
+		});
+		fileMenu.add(selectLvlMenu);
 		mb.add(fileMenu);
 		setJMenuBar(mb);
 	}

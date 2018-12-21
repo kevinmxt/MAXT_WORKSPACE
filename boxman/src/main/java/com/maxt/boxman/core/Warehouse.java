@@ -31,6 +31,11 @@ public class Warehouse {
 	public static final int MARK = 3;
 	
 	/**
+	 * 箱子管理员
+	 */
+	public static final int BOXMAN = 4;
+	
+	/**
 	 * 已经有箱子在上面的标记点
 	 */
 	public static final int MARKBOX = BOX + MARK;

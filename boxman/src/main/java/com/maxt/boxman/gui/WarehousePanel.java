@@ -48,8 +48,34 @@ public class WarehousePanel extends JPanel {
 			}
 			
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("mouse clicked");
-				System.out.println(e.getComponent().getComponentAt(e.getPoint()).getName());
+//				System.out.println("mouse clicked");
+				try {
+					BoxmanFrame frame = (BoxmanFrame) e.getComponent().getParent().getParent().getParent().getParent();
+					if (frame.isEditMode() && frame.getCurrentType() != -1) {
+						JLabel l = (JLabel) e.getComponent().getComponentAt(e.getPoint());
+						String[] position = l.getName().split(",");
+						//素材类型
+						int type = frame.getCurrentType();
+						int x = Integer.parseInt(position[0]);
+						int y = Integer.parseInt(position[1]);
+						if (type == Warehouse.BOXMAN) {
+							warehouse.setX(x);
+							warehouse.setY(y);
+						} else if (type == Warehouse.BOX && ResourceItemHolder.MARK_IMG.equals(l.getIcon())) {
+							warehouse.getSpace()[y][x] = Warehouse.MARKBOX;
+						} else if (type == Warehouse.MARK && ResourceItemHolder.BOX_IMG.equals(l.getIcon())) {
+							warehouse.getSpace()[y][x] = Warehouse.MARKBOX;
+						} else {
+							warehouse.getSpace()[y][x] = type;
+						}
+						renderGraphic();
+						frame.setVisible(true);
+//						System.out.println(l.getIcon());
+//						System.out.println(frame.getCurrentType());
+					}
+				} catch (Exception e2) {
+					System.out.println("invalid position");
+				}
 			}
 		});
 	}

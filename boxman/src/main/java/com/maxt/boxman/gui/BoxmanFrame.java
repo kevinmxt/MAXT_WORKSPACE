@@ -3,6 +3,7 @@
  */
 package com.maxt.boxman.gui;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -30,9 +31,13 @@ public class BoxmanFrame extends JFrame {
 	int currentLvl = 1;
 
 	/** game panel */
-	WarehousePanel panel;
+	private WarehousePanel panel;
 	
-	Warehouse warehouse;
+	private Warehouse warehouse;
+	
+	private EditToolbar toolbar;
+	
+	private boolean editMode = false;
 
 	public BoxmanFrame(String title) {
         // 标题栏
@@ -165,8 +170,43 @@ public class BoxmanFrame extends JFrame {
 			}
 		});
 		fileMenu.add(selectLvlMenu);
+
+		JMenu debugMenu = new JMenu("DEBUG MODE");
+		JMenuItem editMenu = new JMenuItem("edit level");
+		editMenu.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("edit level");
+				toolbar.setVisible(true);
+				currentLvl = 0;
+				editMode = true;
+				generateGamePanel();
+			}
+		});
+		debugMenu.add(editMenu);
+		JMenuItem quiteditMenu = new JMenuItem("quit edit");
+		quiteditMenu.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("quit edit");
+				toolbar.setVisible(false);
+//				currentLvl = 0;
+				editMode = false;
+//				generateGamePanel();
+				refreshGraphic();
+			}
+		});
+		debugMenu.add(quiteditMenu);
+		
 		mb.add(fileMenu);
+		mb.add(debugMenu);
 		setJMenuBar(mb);
+		//添加工具栏, 默认不可见
+		toolbar = new EditToolbar();
+        setLayout(new BorderLayout());
+		add(toolbar, BorderLayout.NORTH);
+		toolbar.setVisible(false);
+		setVisible(true);
 	}
 	
 	/**
@@ -188,6 +228,21 @@ public class BoxmanFrame extends JFrame {
 		panel = new WarehousePanel(warehouse);
 		add(panel);
 		refreshGraphic();
+	}
+	
+	/**
+	 * 返回当前选中的素材类型
+	 * @return
+	 */
+	public int getCurrentType() {
+		return toolbar.getCurrentType();
+	}
+
+	/**
+	 * @return the editMode
+	 */
+	public boolean isEditMode() {
+		return editMode;
 	}
 	
 }

@@ -45,11 +45,8 @@
 	        <executions>
 	            <execution>
 	                <configuration>
-	                    Optional
 	                    <onejarVersion>0.97</onejarVersion>
-	                    Optional, default is false
 	                    <attachToBuild>true</attachToBuild>
-	                    Optional, default is "onejar"
 	                    <classifier>onejar</classifier>
 	                </configuration>
 	                <goals>

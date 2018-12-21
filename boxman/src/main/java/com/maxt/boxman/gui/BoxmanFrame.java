@@ -3,24 +3,18 @@
  */
 package com.maxt.boxman.gui;
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.IOException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import com.maxt.boxman.core.LevelManager;
-import com.maxt.boxman.core.ResourceLoader;
 import com.maxt.boxman.core.Warehouse;
 import com.maxt.boxman.core.Warehouse.Direction;
 
@@ -29,35 +23,17 @@ import com.maxt.boxman.core.Warehouse.Direction;
  * @author maxt@yusys.com.cn
  * @since 2018年12月19日
  */
-public class BoxmanFrame extends JFrame implements ActionListener {
+public class BoxmanFrame extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	int currentLvl = 1;
 
 	/** game panel */
-	JPanel panel;
+	WarehousePanel panel;
 	
 	Warehouse warehouse;
 
-	ImageIcon wallImg = null;
-	ImageIcon floorImg = null;
-	ImageIcon boxmanImg = null;
-	ImageIcon markImg = null;
-	ImageIcon boxImg = null;
-	ImageIcon markboxImg = null;
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public BoxmanFrame(String title) {
         // 标题栏
         super(title);
@@ -77,24 +53,19 @@ public class BoxmanFrame extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * 
+	 * 添加监听事件
 	 */
 	private void addListeners() {
-		// TODO Auto-generated method stub
+		// 键盘监听
 		addKeyListener(new KeyListener() {
 			
 			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
 				if (e.getKeyCode() == 37) { //left
 					boxmanMove(Direction.LEFT);
 				} else if (e.getKeyCode() == 38) { //up
@@ -107,6 +78,7 @@ public class BoxmanFrame extends JFrame implements ActionListener {
 			}
 
 		});
+		
 	}
 
 	/**
@@ -115,9 +87,17 @@ public class BoxmanFrame extends JFrame implements ActionListener {
 	 */
 	private void boxmanMove(Direction direction) {
 		if (warehouse.move(direction)) {
-			renderGraphic();
+			refreshGraphic();
 			isWin();
 		}
+	}
+	
+	/**
+	 * 刷新画面
+	 */
+	private void refreshGraphic() {
+		panel.renderGraphic();
+		setVisible(true);
 	}
 	
 	/**
@@ -136,25 +116,8 @@ public class BoxmanFrame extends JFrame implements ActionListener {
 	 */
 	private void generateInterface() {
 		generateMenu();
-		initResource();
+//		initResource();
 		generateGamePanel();
-	}
-	
-	/**
-	 * 初始化资源文件
-	 */
-	private void initResource() {
-		try {
-			wallImg = new ImageIcon(ResourceLoader.getFileByteData("picture/wall.png"));
-			floorImg = new ImageIcon(ResourceLoader.getFileByteData("picture/floor.png"));
-			boxmanImg = new ImageIcon(ResourceLoader.getFileByteData("picture/boxman.png"));
-			markImg = new ImageIcon(ResourceLoader.getFileByteData("picture/mark.png"));
-			boxImg = new ImageIcon(ResourceLoader.getFileByteData("picture/box.png"));
-			markboxImg = new ImageIcon(ResourceLoader.getFileByteData("picture/markbox.png"));
-		} catch (IOException e) {
-			System.out.println("loading picture error");
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -168,7 +131,6 @@ public class BoxmanFrame extends JFrame implements ActionListener {
 		startMenu.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				System.out.println("new game");
 				currentLvl = 1;
 				generateGamePanel();
@@ -179,7 +141,6 @@ public class BoxmanFrame extends JFrame implements ActionListener {
 		resetMenu.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				System.out.println("reset game");
 				generateGamePanel();
 			}
@@ -189,7 +150,6 @@ public class BoxmanFrame extends JFrame implements ActionListener {
 		selectLvlMenu.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				System.out.println("select level");
 				String result = JOptionPane.showInputDialog(null, "please input level", "select level",
 						JOptionPane.OK_CANCEL_OPTION);
@@ -217,12 +177,7 @@ public class BoxmanFrame extends JFrame implements ActionListener {
 			remove(panel);
 			setVisible(true);
 		}
-		panel = new JPanel();
-//			panel.setBackground(Color.BLACK);
-		panel.setLayout(new GridLayout(Warehouse.HEIGHT, Warehouse.WIDTH));
-		add(panel);
 		loadLevel();
-		setVisible(true);
 	}
 	
 	/**
@@ -230,55 +185,9 @@ public class BoxmanFrame extends JFrame implements ActionListener {
 	 */
 	private void loadLevel() {
 		warehouse = LevelManager.loadLevel(currentLvl);
-		renderGraphic();
+		panel = new WarehousePanel(warehouse);
+		add(panel);
+		refreshGraphic();
 	}
 	
-	/**
-	 * 渲染画面
-	 * @param warehouse
-	 */
-	private void renderGraphic() {
-		panel.removeAll();
-		for (int i = 0; i < warehouse.getSpace().length; i++) {
-			int[] row = warehouse.getSpace()[i];
-			for (int j = 0; j < row.length; j++) {
-				JLabel l = new JLabel();
-				if (i == warehouse.getY() && j == warehouse.getX()) {
-//					System.out.print("* ");
-					l.setText("☺");
-					l.setIcon(boxmanImg);
-				} else {
-//					System.out.print(row[j] + " ");
-					switch (row[j]) {
-					case Warehouse.BOX:
-						l.setText("□");
-						l.setIcon(boxImg);
-						break;
-					case Warehouse.MARK:
-						l.setText("☆");
-						l.setIcon(markImg);
-						break;
-					case Warehouse.MARKBOX:
-						l.setText("■");
-						l.setIcon(markboxImg);
-						break;
-					case Warehouse.FLOOR:
-						l.setText("░");
-						l.setIcon(floorImg);
-						break;
-					case Warehouse.WALL:
-						l.setText("█");
-						l.setIcon(wallImg);
-						break;
-					default:
-						break;
-					}
-				}
-				panel.add(l);
-			}
-//			System.out.println();
-		}
-		setVisible(true);
-	}
-
 }

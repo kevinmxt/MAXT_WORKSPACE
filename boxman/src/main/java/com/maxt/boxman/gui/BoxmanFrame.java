@@ -202,7 +202,7 @@ public class BoxmanFrame extends JFrame {
 		mb.add(debugMenu);
 		setJMenuBar(mb);
 		//添加工具栏, 默认不可见
-		toolbar = new EditToolbar();
+		toolbar = new EditToolbar(warehouse);
         setLayout(new BorderLayout());
 		add(toolbar, BorderLayout.NORTH);
 		toolbar.setVisible(false);
@@ -227,6 +227,7 @@ public class BoxmanFrame extends JFrame {
 		warehouse = LevelManager.loadLevel(currentLvl);
 		panel = new WarehousePanel(warehouse);
 		add(panel);
+		toolbar.setWarehouse(warehouse);
 		refreshGraphic();
 	}
 	

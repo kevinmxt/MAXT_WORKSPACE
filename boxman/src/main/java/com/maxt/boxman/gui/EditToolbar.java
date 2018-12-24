@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
 
+import com.maxt.boxman.core.LevelManager;
 import com.maxt.boxman.core.Warehouse;
 
 /**
@@ -20,6 +21,9 @@ import com.maxt.boxman.core.Warehouse;
 public class EditToolbar extends JToolBar {
 
 	private static final long serialVersionUID = 1L;
+	
+	Warehouse warehouse;
+	
 	private JButton wallBt;
 	private JButton floorBt;
 	private JButton boxBt;
@@ -27,8 +31,10 @@ public class EditToolbar extends JToolBar {
 	private JButton boxmanBt;
 	private JLabel desc;
 	private JLabel currentSelected;
+	private JButton saveBt;
 
-	public EditToolbar() {
+	public EditToolbar(Warehouse warehouse) {
+		this.warehouse = warehouse;
 		wallBt = new JButton(ResourceItemHolder.WALL_IMG);
 		floorBt = new JButton(ResourceItemHolder.FLOOR_IMG);
 		boxBt = new JButton(ResourceItemHolder.BOX_IMG);
@@ -39,11 +45,15 @@ public class EditToolbar extends JToolBar {
 		add(boxBt);
 		add(markBt);
 		add(boxmanBt);
+		addSeparator();
 		desc = new JLabel(" 当前选择: ");
 		currentSelected = new JLabel(ResourceItemHolder.WALL_IMG);
 		currentSelected.setName(Warehouse.WALL + "");
 		add(desc);
 		add(currentSelected);
+		addSeparator();
+		saveBt = new JButton("保存");
+		add(saveBt);
 		addListeners();
 	}
 
@@ -76,6 +86,12 @@ public class EditToolbar extends JToolBar {
 				currentSelected.setIcon(ResourceItemHolder.BOXMAN_IMG);
 			}
 		});
+		saveBt.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				LevelManager.generateLevel(warehouse);
+			}
+		});
 	}
 	
 	/**
@@ -96,5 +112,12 @@ public class EditToolbar extends JToolBar {
 			type  = Warehouse.BOXMAN; 
 		}
 		return type;
+	}
+
+	/**
+	 * @param warehouse the warehouse to set
+	 */
+	public void setWarehouse(Warehouse warehouse) {
+		this.warehouse = warehouse;
 	}
 }

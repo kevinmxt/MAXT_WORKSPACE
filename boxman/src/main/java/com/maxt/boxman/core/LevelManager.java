@@ -109,4 +109,45 @@ public class LevelManager {
 		}
 		return str;
 	}
+	
+	/**
+	 * 根据warehouse生成level的json数据
+	 * @param warehouse
+	 * @return
+	 */
+	public static String generateLevel(Warehouse warehouse) {
+		//关卡数据
+		JSONObject levelObj = new JSONObject();
+		levelObj.accumulate("x", warehouse.getX());
+		levelObj.accumulate("y", warehouse.getY());
+		int[][] space = warehouse.getSpace();
+		JSONArray floorArr = new JSONArray();
+		JSONArray boxArr = new JSONArray();
+		JSONArray markArr = new JSONArray();
+		JSONArray markboxArr = new JSONArray();
+		for (int i = 0; i < warehouse.getSpace().length; i++) {
+			int[] row = warehouse.getSpace()[i];
+			for (int j = 0; j < row.length; j++) {
+				if (space[i][j] == Warehouse.FLOOR) {
+					floorArr.add(j + "," + i);
+				} else if (space[i][j] == Warehouse.BOX) {
+					boxArr.add(j + "," + i);
+				} else if (space[i][j] == Warehouse.MARK) {
+					markArr.add(j + "," + i);
+				} else if (space[i][j] == Warehouse.MARKBOX) {
+					markboxArr.add(j + "," + i);
+				}
+			}
+		}
+		JSONObject spaceObj = new JSONObject();
+		spaceObj.accumulate("floor", floorArr);
+		spaceObj.accumulate("box", boxArr);
+		spaceObj.accumulate("mark", markArr);
+		if (markboxArr.size() > 0) {
+			spaceObj.accumulate("markbox", markboxArr);
+		}
+		levelObj.accumulate("space", spaceObj);
+		System.out.println(levelObj);
+		return levelObj.toString();
+	}
 }

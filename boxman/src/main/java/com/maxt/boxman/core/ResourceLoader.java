@@ -17,6 +17,12 @@ import org.apache.commons.io.IOUtils;
  */
 public class ResourceLoader {
 
+	/**
+	 * 读取文件文本内容
+	 * @param fileName
+	 * @return
+	 * @throws IOException
+	 */
 	public static String getFileContent(String fileName) throws IOException {
 		//返回读取指定资源的输入流  
         InputStream is=Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
@@ -34,6 +40,12 @@ public class ResourceLoader {
 		}
 	}
 	
+	/**
+	 * 读取文件自己内容
+	 * @param fileName
+	 * @return
+	 * @throws IOException
+	 */
 	public static byte[] getFileByteData(String fileName) throws IOException {
 		//返回读取指定资源的输入流  
 		InputStream is=Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
@@ -43,5 +55,9 @@ public class ResourceLoader {
 		} finally {
 			is.close();
 		}
+	}
+	
+	public static void saveFile(String fileName, String content) {
+		
 	}
 }

@@ -22,6 +22,7 @@ public class ResourceItemHolder {
 	public static ImageIcon MARK_IMG = null;
 	public static ImageIcon BOX_IMG = null;
 	public static ImageIcon MARKBOX_IMG = null;
+	public static ImageIcon SAVEBT_IMG = null;
 	
 	/**
 	 * 初始化资源文件
@@ -35,6 +36,7 @@ public class ResourceItemHolder {
 			MARK_IMG = new ImageIcon(ResourceLoader.getFileByteData("picture/mark.png"));
 			BOX_IMG = new ImageIcon(ResourceLoader.getFileByteData("picture/box.png"));
 			MARKBOX_IMG = new ImageIcon(ResourceLoader.getFileByteData("picture/markbox.png"));
+			SAVEBT_IMG = new ImageIcon(ResourceLoader.getFileByteData("picture/saveBt.png"));
 		} catch (IOException e) {
 			System.out.println("loading picture error");
 			e.printStackTrace();

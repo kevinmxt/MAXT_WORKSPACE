@@ -36,10 +36,15 @@ public class EditToolbar extends JToolBar {
 	public EditToolbar(Warehouse warehouse) {
 		this.warehouse = warehouse;
 		wallBt = new JButton(ResourceItemHolder.WALL_IMG);
+		wallBt.setToolTipText("墙");
 		floorBt = new JButton(ResourceItemHolder.FLOOR_IMG);
+		floorBt.setToolTipText("地板");
 		boxBt = new JButton(ResourceItemHolder.BOX_IMG);
+		boxBt.setToolTipText("箱子");
 		markBt = new JButton(ResourceItemHolder.MARK_IMG);
+		markBt.setToolTipText("标记点");
 		boxmanBt = new JButton(ResourceItemHolder.BOXMAN_IMG);
+		boxmanBt.setToolTipText("搬运工");
 		add(wallBt);
 		add(floorBt);
 		add(boxBt);
@@ -52,7 +57,8 @@ public class EditToolbar extends JToolBar {
 		add(desc);
 		add(currentSelected);
 		addSeparator();
-		saveBt = new JButton("保存");
+		saveBt = new JButton(ResourceItemHolder.SAVEBT_IMG);
+		saveBt.setToolTipText("保存");
 		add(saveBt);
 		addListeners();
 	}

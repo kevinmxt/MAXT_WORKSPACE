@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -38,6 +39,9 @@ public class BoxmanFrame extends JFrame {
 	private EditToolbar toolbar;
 	
 	private boolean editMode = false;
+
+	/** 页脚信息 */
+	private JLabel infoLabel;
 
 	public BoxmanFrame(String title) {
         // 标题栏
@@ -206,6 +210,8 @@ public class BoxmanFrame extends JFrame {
         setLayout(new BorderLayout());
 		add(toolbar, BorderLayout.NORTH);
 		toolbar.setVisible(false);
+		infoLabel = new JLabel("当前关卡: ");
+		add(infoLabel, BorderLayout.SOUTH);
 		setVisible(true);
 	}
 	
@@ -228,6 +234,7 @@ public class BoxmanFrame extends JFrame {
 		panel = new WarehousePanel(warehouse);
 		add(panel);
 		toolbar.setWarehouse(warehouse);
+		infoLabel.setText("当前关卡: " + currentLvl);
 		refreshGraphic();
 	}
 	
